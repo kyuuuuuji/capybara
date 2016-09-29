@@ -33,6 +33,30 @@ module.exports = (robot) ->
 　 U￣U￣￣￣￣U￣
     ```
     """
+
+  robot.hear /退社/i, (res) ->
+    res.send """
+    ```
+  　　/)――ヘ
+　　 _／　　　　＼
+　 ／　 ●　　　● ヽ    おつかれやでー
+　｜　　　　 ▼　　 |
+　｜　　　　 人　 ノ
+　 U￣U￣￣￣￣U￣
+    ```
+    """
+
+  robot.hear /たいしゃ/i, (res) ->
+    res.send """
+    ```
+  　　/)――ヘ
+　　 _／　　　　＼
+　 ／　 ●　　　● ヽ    おつかれやでー
+　｜　　　　 ▼　　 |
+　｜　　　　 人　 ノ
+　 U￣U￣￣￣￣U￣
+    ```
+    """
   #
   # robot.respond /open the (.*) doors/i, (res) ->
   #   doorType = res.match[1]
