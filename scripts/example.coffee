@@ -21,6 +21,18 @@ module.exports = (robot) ->
 　 U￣U￣￣￣￣U￣
     ```
     """
+
+  robot.hear /かえりた/i, (res) ->
+    res.send """
+    ```
+  　　/)――ヘ
+　　 _／　　　　＼
+　 ／　 ●　　　● ヽ    わかるー
+　｜　　　　 ▼　　 |
+　｜　　　　 人　 ノ
+　 U￣U￣￣￣￣U￣
+    ```
+    """
   #
   # robot.respond /open the (.*) doors/i, (res) ->
   #   doorType = res.match[1]
