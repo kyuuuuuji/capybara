@@ -57,6 +57,18 @@ module.exports = (robot) ->
 　 U￣U￣￣￣￣U￣
     ```
     """
+
+  robot.respond /やかましい/i, (res) -> 
+    res.send """
+    ```
+  　　/)――ヘ
+　　 _／　　　　＼
+　 ／　 ●　　　● ヽ    えへへ
+　｜　//　　 ▼　// |
+　｜　　　　 人　 ノ
+　 U￣U￣￣￣￣U￣
+    ```
+    """
   #
   # robot.respond /open the (.*) doors/i, (res) ->
   #   doorType = res.match[1]
