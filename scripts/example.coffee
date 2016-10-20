@@ -69,6 +69,42 @@ module.exports = (robot) ->
 　 U￣U￣￣￣￣U￣
     ```
     """
+
+  # okane kaka 12000えん
+  robot.hear /okane (keke|kaka) ([0-9]*)/i, (res) ->
+    user = res.match[1]
+    money = res.match[2]
+    # ユーザーに紐づくお金リストを取得して追加
+    moneys = robot.brain.get(user) ? []
+    moneys.push(money)
+
+    robot.brain.set(user, moneys)
+    res.send "#{user} は #{money} えんのしゃっきん！ おぼえました"
+    
+  robot.hear /okane list (keke|kaka)/i, (res) ->
+    user = res.match[1]
+    moneys = robot.brain.get(res.match[1])
+    mention = "@#{user}"
+
+    res.send "@#{user} のしゃっきんは #{moneys} はらうのよ～！" 
+
+  robot.hear /okane ok (keke|kaka) ([0-9]*)/i, (res) ->
+    user = res.match[1]
+    money = res.match[2]
+    # ユーザーに紐づくお金リストを取得して削除
+    moneys = robot.brain.get(user) ? []
+
+    new_moneys = []
+
+    if money in moneys
+      for new_money in moneys
+        if new_money isnt money
+          new_moneys.push(new_money)
+      robot.brain.set(user, new_moneys)
+      res.send "#{user} は #{money} かえしたわよ～！ のこりのしゃっきんは #{new_moneys} わよ～！"
+    else
+      res.send "ないわよ～…"
+
   #
   # robot.respond /open the (.*) doors/i, (res) ->
   #   doorType = res.match[1]
