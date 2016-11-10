@@ -70,40 +70,35 @@ module.exports = (robot) ->
     ```
     """
 
-  # okane kaka 12000えん
+  # okane kaka 12000
   robot.hear /okane (keke|kaka) ([0-9]*)/i, (res) ->
     user = res.match[1]
-    money = res.match[2]
-    # ユーザーに紐づくお金リストを取得して追加
-    moneys = robot.brain.get(user) ? []
-    moneys.push(money)
+    req_money = res.match[2]
+    # ユーザーに紐づく借金額を取得して加算
+    money = robot.brain.get(user) ? 0
+    money = money + req_money
 
-    robot.brain.set(user, moneys)
-    res.send "#{user} は #{money} えんのしゃっきん！ おぼえました"
+    robot.brain.set(user, money)
+    res.send "#{user} は いま #{money} えんのしゃっきん！ おぼえました。"
     
   robot.hear /okane list (keke|kaka)/i, (res) ->
     user = res.match[1]
-    moneys = robot.brain.get(res.match[1])
+    money = robot.brain.get(res.match[1])
     mention = "@#{user}"
 
-    res.send "@#{user} のしゃっきんは #{moneys} はらうのよ～！" 
+    res.send "@#{user} のしゃっきんは #{money} えんです。 はらってくださいね。" 
 
   robot.hear /okane ok (keke|kaka) ([0-9]*)/i, (res) ->
     user = res.match[1]
-    money = res.match[2]
-    # ユーザーに紐づくお金リストを取得して削除
-    moneys = robot.brain.get(user) ? []
+    req_money = res.match[2]
+    # ユーザーに紐づく借金額を取得して減算
+    money = robot.brain.get(user) ? 0
 
-    new_moneys = []
-
-    if money in moneys
-      for new_money in moneys
-        if new_money isnt money
-          new_moneys.push(new_money)
-      robot.brain.set(user, new_moneys)
-      res.send "#{user} は #{money} かえしたわよ～！ のこりのしゃっきんは #{new_moneys} わよ～！"
+    if req_money > money
+      res.send "そんなに かりてないです…"
     else
-      res.send "ないわよ～…"
+      money = money - req_money
+      res.send "#{user} は #{req_money} かえしました！ のこりのしゃっきんは #{money} です。"
 
   #
   # robot.respond /open the (.*) doors/i, (res) ->
