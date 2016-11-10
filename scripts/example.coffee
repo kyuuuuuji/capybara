@@ -71,7 +71,7 @@ module.exports = (robot) ->
     """
 
   # okane kaka 12000
-  robot.hear /okane (keke|kaka) ([0-9]*)/i, (res) ->
+  robot.hear /okane add (keke|kaka) ([0-9]*)/i, (res) ->
     user = res.match[1]
     req_money = res.match[2]
     # ユーザーに紐づく借金額を取得して加算
@@ -81,7 +81,7 @@ module.exports = (robot) ->
     robot.brain.set(user, money)
     res.send "#{user} は いま #{money} えんのしゃっきん！ おぼえました。"
     
-  robot.hear /okane list (keke|kaka)/i, (res) ->
+  robot.hear /okane status (keke|kaka)/i, (res) ->
     user = res.match[1]
     money = robot.brain.get(res.match[1])
     mention = "@#{user}"
@@ -98,7 +98,15 @@ module.exports = (robot) ->
       res.send "そんなに かりてないです…"
     else
       money = money - req_money
+      robot.brain.set(user, money)
       res.send "#{user} は #{req_money} かえしました！ のこりのしゃっきんは #{money} です。"
+
+  robot.hear /okane clear (keke|kaka)/i, (res) ->
+    user = res.match[1]
+
+    robot.brain.set(user, 0)
+    res.send "#{user} の しゃっきんは 0えん に なりました！"
+
 
   #
   # robot.respond /open the (.*) doors/i, (res) ->
