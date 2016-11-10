@@ -84,9 +84,12 @@ module.exports = (robot) ->
   robot.hear /okane status (keke|kaka)/i, (res) ->
     user = res.match[1]
     money = robot.brain.get(res.match[1])
-    mention = "@#{user}"
 
-    res.send "@#{user} のしゃっきんは #{money} えんです。 はらってくださいね。" 
+    end_message = "はらってくださいね。"
+    if money == 0
+      end_message = "ゆうのう！"
+
+    res.send "@#{user} のしゃっきんは #{money} えんです。 #{end_message}" 
 
   robot.hear /okane ok (keke|kaka) ([0-9]*)/i, (res) ->
     user = res.match[1]
