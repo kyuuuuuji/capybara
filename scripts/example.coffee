@@ -102,13 +102,13 @@ module.exports = (robot) ->
     else
       money = money - req_money
       robot.brain.set(user, money)
-      res.send "#{user} は #{req_money} かえしました！ のこりのしゃっきんは #{money} です。"
+      res.send "#{user} は #{req_money} かえしました！ のこりのしゃっきんは #{money} えんです。"
 
   robot.hear /okane clear (keke|kaka)/i, (res) ->
     user = res.match[1]
 
     robot.brain.set(user, 0)
-    res.send "#{user} の しゃっきんは 0えん に なりました！"
+    res.send "#{user} の しゃっきんは 0 えん に なりました！"
 
 
   #
