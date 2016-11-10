@@ -73,7 +73,7 @@ module.exports = (robot) ->
   # okane kaka 12000
   robot.hear /okane add (keke|kaka) ([0-9]*)/i, (res) ->
     user = res.match[1]
-    req_money = res.match[2]
+    req_money = Number(res.match[2])
     # ユーザーに紐づく借金額を取得して加算
     money = robot.brain.get(user) ? 0
     money = money + req_money
@@ -93,7 +93,7 @@ module.exports = (robot) ->
 
   robot.hear /okane ok (keke|kaka) ([0-9]*)/i, (res) ->
     user = res.match[1]
-    req_money = res.match[2]
+    req_money = Number(res.match[2])
     # ユーザーに紐づく借金額を取得して減算
     money = robot.brain.get(user) ? 0
 
