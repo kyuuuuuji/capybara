@@ -6,7 +6,7 @@ request = require('request');
 module.exports = (robot) ->
 
   # Crontabの設定方法と一緒 *(sec) *(min) *(hour) *(day) *(month) *(day of the week)
-  new cronJob('*/10 * 11-18 * * *', () ->
+  new cronJob('0 0 10-18 * * 2,4', () ->
     # 公式HPを叩く
     url = 'http://www.shufu.co.jp/contents/kapibara/'
     channel_id = process.env.CAPYBARA_CHANNEL_ID
