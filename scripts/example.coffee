@@ -10,6 +10,19 @@
 
 module.exports = (robot) ->
 
+  robot.hear /わっしょい/i, (res) ->
+    res.send """
+    ```
+　　　　　 /)      /)
+　　　 _／　　￣￣ 　＼    わっしょい！
+　　／　　　　　　　　  ヽ
+　/　　　　●　　　　　●  ヽ
+　!　　　　　　 　 ▼　 　 l
+　ヽ_ 　 　　　   人    ノ
+　　　゛゛ーＪ―――――――J''
+    ```
+    """
+
   robot.hear /草/i, (res) ->
     res.send """
     ```
@@ -104,6 +117,31 @@ module.exports = (robot) ->
       res.send "#{user} は #{money} かえしたわよ～！ のこりのしゃっきんは #{new_moneys} わよ～！"
     else
       res.send "ないわよ～…"
+
+  cheerio = require('cheerio');
+  request = require('request');
+  robot.respond /よんこま/i, (res) ->
+    # 公式HPを叩く
+    url = 'http://www.shufu.co.jp/contents/kapibara/'
+
+    request url, (_, http_res) -> 
+      $ = cheerio.load http_res.body
+      comic_url = $('#comic_box img').attr('src');
+
+      current_comic_url = robot.brain.get('capybara_comic') ? '';
+
+      if comic_url isnt current_comic_url
+        message = """あたらしい よんこまが こうしんされました！
+        どうぞ！
+        #{url}#{comic_url}"""
+
+        res.send(message);
+        robot.brain.set('capybara_comic', comic_url);
+      else
+        res.send("""まだでした…
+        まえのやつ みててください
+        #{url}#{current_comic_url}""")
+
 
   #
   # robot.respond /open the (.*) doors/i, (res) ->
