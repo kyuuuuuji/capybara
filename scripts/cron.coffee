@@ -10,6 +10,7 @@ module.exports = (robot) ->
     # 公式HPを叩く
     url = 'http://www.shufu.co.jp/contents/kapibara/'
     channel_id = process.env.CAPYBARA_CHANNEL_ID
+    console.log('cron acceccing to capybara-san site...')
 
     request url, (_, res) ->
       $ = cheerio.load res.body
