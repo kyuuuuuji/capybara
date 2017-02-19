@@ -129,7 +129,7 @@ module.exports = (robot) ->
   robot.respond /よんこま/i, (res) ->
     # 公式HPを叩く
     url = 'http://www.shufu.co.jp/contents/kapibara/'
-    console.log('robot acceccing to capybara-san site...')
+    console.log(new Date + ' --- robot acceccing to capybara-san site...')
 
     request url, (_, http_res) -> 
       $ = cheerio.load http_res.body
