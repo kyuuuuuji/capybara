@@ -69,8 +69,8 @@ module.exports = (robot) ->
     url = 'http://www.kotsu.metro.tokyo.jp/subway/schedule/'
     console.log(new Date + ' --- robot acceccing to subway site...')
 
-    request url, (_, res) ->
-      $ = cheerio.load res.body
+    request url, (_, http_res) ->
+      $ = cheerio.load http_res.body
       delay_info = $('.oedo').next().text();
       if delay_info isnt ''
         message = """みてきました！ こんなことが かいてありました
