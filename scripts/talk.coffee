@@ -73,3 +73,5 @@ module.exports = (robot) ->
     ```
     """
 
+  robot.hear /もやし/i, (res) ->
+    res.send 'うっうー！'

@@ -1,6 +1,8 @@
+cronJob = require('cron').CronJob
+
 module.exports = (robot) ->
 
-  # okane kaka 12000
+  # okane add kaka 12000
   robot.hear /okane add (keke|kaka) ([0-9]*)/i, (res) ->
     user = res.match[1]
     req_money = Number(res.match[2])
@@ -39,3 +41,42 @@ module.exports = (robot) ->
 
     robot.brain.set(user, 0)
     res.send "#{user} の しゃっきんは 0 えん に なりました！"
+
+  new cronJob('0 0 7 * * 1-5', () ->
+    robot.messageRoom('おーえどせんが おくれてないか みてきます')
+    url = 'http://www.kotsu.metro.tokyo.jp/subway/schedule/'
+    channel_id = process.env.CAPYBARA_CHANNEL_ID
+    console.log(new Date + ' --- cron acceccing to subway site...')
+
+    request url, (_, res) ->
+      $ = cheerio.load res.body
+      delay_info = $('.oedo').next().text();
+      if delay_info isnt ''
+        message = """みてきました！ こんなことが かいてありました
+        #{delay_info}"""
+      else
+        message = """うまくいきませんでした、ごめんなさい…
+        url はっておきますね
+        #{url}"""
+    
+      robot.messageRoom(channel_id, message)
+
+  , null, true, "Asia/Tokyo").start()
+
+  robot.respond /でんしゃ/i, (res) ->
+    url = 'http://www.kotsu.metro.tokyo.jp/subway/schedule/'
+    console.log(new Date + ' --- robot acceccing to subway site...')
+
+    request url, (_, res) ->
+      $ = cheerio.load res.body
+      delay_info = $('.oedo').next().text();
+      if delay_info isnt ''
+        message = """みてきました！ こんなことが かいてありました
+        #{delay_info}"""
+      else
+        message = """うまくいきませんでした、ごめんなさい…
+        url はっておきますね
+        #{url}"""
+    
+      res.send(message)
+    
