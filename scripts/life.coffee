@@ -1,5 +1,6 @@
 cronJob = require('cron').CronJob
 request = require('request');
+cheerio = require('cheerio');
 
 module.exports = (robot) ->
 
