@@ -28,3 +28,27 @@ module.exports = (robot) ->
 
 
   , null, true, "Asia/Tokyo").start()
+
+  robot.respond /よんこま/i, (res) ->
+    # 公式HPを叩く
+    url = 'http://www.shufu.co.jp/contents/kapibara/'
+    console.log(new Date + ' --- robot acceccing to capybara-san site...')
+
+    request url, (_, http_res) -> 
+      $ = cheerio.load http_res.body
+      comic_url = $('#comic_box img').attr('src');
+
+      current_comic_url = robot.brain.get('capybara_comic') ? '';
+
+      if comic_url isnt current_comic_url
+        message = """あたらしい よんこまが こうしんされました！
+        どうぞ！
+        #{url}#{comic_url}"""
+
+        res.send(message);
+        robot.brain.set('capybara_comic', comic_url);
+      else
+        res.send("""まだでした…
+        まえのやつ みててください
+        #{url}#{current_comic_url}""")
+
