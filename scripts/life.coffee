@@ -82,25 +82,25 @@ module.exports = (robot) ->
     
       res.send(message)
     
-    robot.respond /かえる keke/i, (res) ->
-      url = 'http://transit.yahoo.co.jp/station/time/22958/'
-      console.log(new Date + ' --- robot acceccing to timetable site...')
-      request url, (_, http_res) ->
-        $ = cheerio.load http_res.body
-        date_now = new Date()
-        hour = date_now.getHours()
-        minute = date_now.getMinutes()
+  robot.respond /かえる keke/i, (res) ->
+    url = 'http://transit.yahoo.co.jp/station/time/22958/'
+    console.log(new Date + ' --- robot acceccing to timetable site...')
+    request url, (_, http_res) ->
+      $ = cheerio.load http_res.body
+      date_now = new Date()
+      hour = date_now.getHours()
+      minute = date_now.getMinutes()
 
-        timetable_minutes = []
-        $('#hh_#{hour} td ul li dl dt').each -> 
-          time = $ @
-          console.log(time.text());
-          timetable_minutes.push(time.text())
-        
-        # 5, 11, 14 ...のような形で入っている
-        for timetable_minute in timetable_minutes
-          if timetable_minute > minute
-            res.send("""つぎに ふたごたまがわからでるでんしゃは、#{hour}じ#{timetable_minute}ふん です！ """)
-            break;
+      timetable_minutes = []
+      $('#hh_#{hour} td ul li dl dt').each -> 
+        time = $ @
+        console.log(time.text());
+        timetable_minutes.push(time.text())
+      
+      # 5, 11, 14 ...のような形で入っている
+      for timetable_minute in timetable_minutes
+        if timetable_minute > minute
+          res.send("""つぎに ふたごたまがわからでるでんしゃは、#{hour}じ#{timetable_minute}ふん です！ """)
+          break;
 
 
