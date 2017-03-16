@@ -86,18 +86,19 @@ module.exports = (robot) ->
       url = 'http://transit.yahoo.co.jp/station/time/22958/'
       request url, (_, http_res) ->
         $ = cheerio.load http_res.body
-        hour = new Date().currentTime.getHours()
-        minute = new Date().currentTime.getMinutes()
+        var date_now = new Date()
+        hour = date_now.getHours()
+        minute = date_now.getMinutes()
 
         timetable_minutes = []
         $('#hh_#{hour} td ul li dl dt').each() -> 
           console.log($(this).text());
           timetable_minutes.push($(this).text())
         
-      # 5, 11, 14 ...のような形で入っている
-      for timetable_minute in timetable_minutes
-        if timetable_minute > minute
-          res.send("""つぎに ふたごたまがわからでるでんしゃは、#{hour}じ#{timetable_minute}ふん です！ """)
-          break;
+        # 5, 11, 14 ...のような形で入っている
+        for timetable_minute in timetable_minutes
+          if timetable_minute > minute
+            res.send("""つぎに ふたごたまがわからでるでんしゃは、#{hour}じ#{timetable_minute}ふん です！ """)
+            break;
 
 
