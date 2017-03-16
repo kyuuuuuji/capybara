@@ -92,9 +92,7 @@ module.exports = (robot) ->
       minute = date_now.getMinutes()
 
       timetable_minutes = []
-      selector = '#hh_#{hour} td ul li dl dt'
-      console.log(selector)
-      $('' + selector).each -> 
+      $("#hh_#{hour} td ul li dl dt").each -> 
         time = $ @
         timetable_minutes.push(time.text())
       
