@@ -86,7 +86,7 @@ module.exports = (robot) ->
       url = 'http://transit.yahoo.co.jp/station/time/22958/'
       request url, (_, http_res) ->
         $ = cheerio.load http_res.body
-        var date_now = new Date()
+        date_now = new Date()
         hour = date_now.getHours()
         minute = date_now.getMinutes()
 
