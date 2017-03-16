@@ -90,10 +90,10 @@ module.exports = (robot) ->
         minute = new Date().currentTime.getMinutes()
 
         timetable_minutes = []
-        $('#hh_#{hour} td ul li dl dt').each(function (idx) {
+        $('#hh_#{hour} td ul li dl dt').each() -> 
           console.log($(this).text());
           timetable_minutes.push($(this).text())
-        });
+        
       # 5, 11, 14 ...のような形で入っている
       for timetable_minute in timetable_minutes
         if timetable_minute > minute
