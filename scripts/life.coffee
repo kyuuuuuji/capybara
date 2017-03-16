@@ -92,9 +92,9 @@ module.exports = (robot) ->
       minute = date_now.getMinutes()
 
       timetable_minutes = []
-      $('#hh_#{hour} td ul li dl dt').each -> 
+      selector = '#hh_#{hour} td ul li dl dt'
+      $(selector).each -> 
         time = $ @
-        console.log(time.text());
         timetable_minutes.push(time.text())
       
       # 5, 11, 14 ...のような形で入っている
