@@ -45,9 +45,9 @@ module.exports = (robot) ->
     res.send "#{user} の しゃっきんは 0 えん に なりました！"
 
   new cronJob('0 0 7 * * 1-5', () ->
-    robot.messageRoom(channel_id, 'おーえどせんが おくれてないか みてきます')
     url = 'http://www.kotsu.metro.tokyo.jp/subway/schedule/'
     channel_id = process.env.CAPYBARA_CHANNEL_ID
+    robot.messageRoom(channel_id, 'おーえどせんが おくれてないか みてきます')
     console.log(new Date + ' --- cron acceccing to subway site...')
 
     request url, (_, res) ->
