@@ -52,7 +52,7 @@ module.exports = (robot) ->
 
     request url, (_, res) ->
       $ = cheerio.load res.body
-      delay_info = $('.oedo').next().text();
+      delay_info = $('.routeOedo').next().text();
       if delay_info isnt ''
         message = """みてきました！ こんなことが かいてありました
         #{delay_info}"""
@@ -71,7 +71,7 @@ module.exports = (robot) ->
 
     request url, (_, http_res) ->
       $ = cheerio.load http_res.body
-      delay_info = $('.oedo').next().text();
+      delay_info = $('.routeOedo').next().text();
       if delay_info isnt ''
         message = """みてきました！ こんなことが かいてありました
         #{delay_info}"""
