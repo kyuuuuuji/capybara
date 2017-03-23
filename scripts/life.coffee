@@ -83,8 +83,13 @@ module.exports = (robot) ->
 
       res.send(message)
 
-  robot.respond /かえる keke/i, (res) ->
-    url = 'http://transit.yahoo.co.jp/station/time/22958/'
+  robot.respond /かえる (keke | kaka)/i, (res) ->
+    url = ''
+    if res.match[1] is keke
+      url = 'http://transit.yahoo.co.jp/station/time/22958/'
+    else
+      url = 'http://transit.yahoo.co.jp/station/time/22507/?gid=3410'
+
     console.log(moment().tz("Asia/Tokyo").format() + ' --- robot acceccing to timetable site...')
     request url, (_, http_res) ->
       $ = cheerio.load http_res.body
