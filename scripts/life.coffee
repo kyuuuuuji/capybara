@@ -86,7 +86,7 @@ module.exports = (robot) ->
   robot.respond /かえる (keke|kaka)/i, (res) ->
     url = ''
     station_name = ''
-    if res.match[1] is keke
+    if res.match[1] is 'keke'
       url = 'http://transit.yahoo.co.jp/station/time/22958/'
       station_name = 'ふたこたまがわ'
     else
