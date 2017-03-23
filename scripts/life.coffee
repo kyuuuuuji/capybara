@@ -88,7 +88,7 @@ module.exports = (robot) ->
     console.log(moment().tz("Asia/Tokyo").format() + ' --- robot acceccing to timetable site...')
     request url, (_, http_res) ->
       $ = cheerio.load http_res.body
-      date_now = moment().tz("Asia/Tokyo").format();
+      date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
       hour = date_now.getHours()
       minute = date_now.getMinutes()
 
