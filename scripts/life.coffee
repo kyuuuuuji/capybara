@@ -85,10 +85,13 @@ module.exports = (robot) ->
 
   robot.respond /かえる (keke|kaka)/i, (res) ->
     url = ''
+    station_name = ''
     if res.match[1] is keke
       url = 'http://transit.yahoo.co.jp/station/time/22958/'
+      station_name = 'ふたこたまがわ'
     else
       url = 'http://transit.yahoo.co.jp/station/time/22507/?gid=3410'
+      station_name = 'いーだばし'
 
     console.log(moment().tz("Asia/Tokyo").format() + ' --- robot acceccing to timetable site...')
     request url, (_, http_res) ->
@@ -105,7 +108,7 @@ module.exports = (robot) ->
       # 5, 11, 14 ...のような形で入っている
       for timetable_minute in timetable_minutes
         if timetable_minute > minute
-          res.send("""つぎに ふたごたまがわからでるでんしゃは、#{hour}じ#{timetable_minute}ふん です！ """)
+          res.send("""つぎに #{station_name}からでるでんしゃは、#{hour}じ#{timetable_minute}ふん です！ """)
           break;
 
 
