@@ -1,6 +1,7 @@
 cronJob = require('cron').CronJob
 request = require('request');
 cheerio = require('cheerio');
+moment = require('moment-timezone');
 
 module.exports = (robot) ->
 
@@ -14,7 +15,7 @@ module.exports = (robot) ->
 
     robot.brain.set(user, money)
     res.send "#{user} は いま #{money} えんのしゃっきん！ おぼえました。"
-    
+
   robot.hear /okane status (keke|kaka)/i, (res) ->
     user = res.match[1]
     money = robot.brain.get(res.match[1])
@@ -23,7 +24,7 @@ module.exports = (robot) ->
     if money == 0
       end_message = "ゆうのう！"
 
-    res.send "@#{user} のしゃっきんは #{money} えんです。 #{end_message}" 
+    res.send "@#{user} のしゃっきんは #{money} えんです。 #{end_message}"
 
   robot.hear /okane ok (keke|kaka) ([0-9]*)/i, (res) ->
     user = res.match[1]
@@ -60,7 +61,7 @@ module.exports = (robot) ->
         message = """うまくいきませんでした、ごめんなさい…
         url はっておきますね
         #{url}"""
-    
+
       robot.messageRoom(channel_id, message)
 
   , null, true, "Asia/Tokyo").start()
@@ -79,23 +80,23 @@ module.exports = (robot) ->
         message = """うまくいきませんでした、ごめんなさい…
         url はっておきますね
         #{url}"""
-    
+
       res.send(message)
-    
+
   robot.respond /かえる keke/i, (res) ->
     url = 'http://transit.yahoo.co.jp/station/time/22958/'
-    console.log(new Date + ' --- robot acceccing to timetable site...')
+    console.log(moment().tz("Asia/Tokyo").format() + ' --- robot acceccing to timetable site...')
     request url, (_, http_res) ->
       $ = cheerio.load http_res.body
-      date_now = new Date()
+      date_now = moment().tz("Asia/Tokyo").format();
       hour = date_now.getHours()
       minute = date_now.getMinutes()
 
       timetable_minutes = []
-      $("#hh_#{hour} td ul li dl dt").each -> 
+      $("#hh_#{hour} td ul li dl dt").each ->
         time = $ @
         timetable_minutes.push(time.text())
-      
+
       # 5, 11, 14 ...のような形で入っている
       for timetable_minute in timetable_minutes
         if timetable_minute > minute
