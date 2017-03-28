@@ -136,8 +136,8 @@ module.exports = (robot) ->
     url = 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/'
     console.log("#{date_now} --- robot acceccing to yodobashi site...")
 
-    request url, (_, res) ->
-      $ = cheerio.load res.body
+    request url, (_, http_res) ->
+      $ = cheerio.load http_res.body
       sales_info = $('.salesInfo').text()
 
       index = sales_info.indexOf('販売休止中です')
