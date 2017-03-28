@@ -130,3 +130,20 @@ module.exports = (robot) ->
       else
         console.log("#{date_now} --- not sales yet...")    
   , null, true, "Asia/Tokyo").start()
+
+  robot.respond /どうよ/i, (res) ->
+    date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
+    url = 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/'
+    console.log("#{date_now} --- robot acceccing to yodobashi site...")
+
+    request url, (_, res) ->
+      $ = cheerio.load res.body
+      sales_info = $('.salesInfo').text()
+
+      index = sales_info.indexOf('販売休止中です')
+      if index isnt -1
+        console.log("#{date_now} --- is salling...? please confirm it !")    
+        res.send('switchうってるかも！かくにんしてください！')
+        res.send('http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/')
+      else
+        console.log("#{date_now} --- not sales yet...")    
