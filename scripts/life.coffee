@@ -139,6 +139,7 @@ module.exports = (robot) ->
     request url, (_, http_res) ->
       $ = cheerio.load http_res.body
       sales_info = $('.salesInfo').text()
+        console.log(sales_info)    
 
       index = sales_info.indexOf('販売休止中です')
       if index isnt -1
