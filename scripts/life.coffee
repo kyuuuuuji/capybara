@@ -139,10 +139,8 @@ module.exports = (robot) ->
     request url, (_, http_res) ->
       $ = cheerio.load http_res.body
       sales_info = $('.salesInfo').text()
-        console.log(sales_info)    
-
       index = sales_info.indexOf('販売休止中です')
-      if index isnt -1
+      if index is -1
         console.log("#{date_now} --- is salling...? please confirm it !")    
         res.send('switchうってるかも！かくにんしてください！')
         res.send('http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/')
