@@ -86,7 +86,7 @@ module.exports = (robot) ->
   robot.respond /かえる/i, (res) ->
     url = ''
     station_name = ''
-    if msg.message.user.name is 'keke'
+    if res.message.user.name is 'keke'
       url = 'http://transit.yahoo.co.jp/station/time/22958/'
       station_name = 'ふたこたまがわ'
     else
@@ -109,7 +109,7 @@ module.exports = (robot) ->
       # 5, 11, 14 ...のような形で入っている
       for timetable_minute in timetable_minutes
         if timetable_minute > buffered_minute
-          res.send("""つぎに #{station_name}からでる、#{msg.message.user.name}がのれそうなでんしゃは、
+          res.send("""つぎに #{station_name}からでる、#{res.message.user.name}がのれそうなでんしゃは、
           #{hour}じ#{timetable_minute}ふん です！ """)
           break;
 
