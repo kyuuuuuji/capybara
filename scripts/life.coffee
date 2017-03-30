@@ -109,7 +109,8 @@ module.exports = (robot) ->
       # 5, 11, 14 ...のような形で入っている
       for timetable_minute in timetable_minutes
         if timetable_minute > buffered_minute
-          res.send("""つぎに #{station_name}からでるでんしゃは、#{hour}じ#{timetable_minute}ふん です！ """)
+          res.send("""つぎに #{station_name}からでる、#{msg.message.user.name}がのれそうなでんしゃは、
+          #{hour}じ#{timetable_minute}ふん です！ """)
           break;
 
 
