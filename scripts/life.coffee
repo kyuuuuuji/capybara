@@ -83,10 +83,10 @@ module.exports = (robot) ->
 
       res.send(message)
 
-  robot.respond /かえる (keke|kaka)/i, (res) ->
+  robot.respond /かえる/i, (res) ->
     url = ''
     station_name = ''
-    if res.match[1] is 'keke'
+    if msg.message.user.name is 'keke'
       url = 'http://transit.yahoo.co.jp/station/time/22958/'
       station_name = 'ふたこたまがわ'
     else
@@ -99,6 +99,7 @@ module.exports = (robot) ->
       date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
       hour = date_now.getHours()
       minute = date_now.getMinutes()
+      buffered_minute = minute + 15
 
       timetable_minutes = []
       $("#hh_#{hour} td ul li dl dt").each ->
@@ -107,7 +108,7 @@ module.exports = (robot) ->
 
       # 5, 11, 14 ...のような形で入っている
       for timetable_minute in timetable_minutes
-        if timetable_minute > minute
+        if timetable_minute > buffered_minute
           res.send("""つぎに #{station_name}からでるでんしゃは、#{hour}じ#{timetable_minute}ふん です！ """)
           break;
 
