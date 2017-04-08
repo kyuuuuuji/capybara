@@ -114,7 +114,7 @@ module.exports = (robot) ->
           break;
 
 
-  new cronJob('0 0 * * * *', () ->
+  new cronJob('0 */10 * * * *', () ->
     channel_id = process.env.CAPYBARA_CHANNEL_ID
     date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
     url = 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/'
@@ -123,8 +123,7 @@ module.exports = (robot) ->
     request url, (_, http_res) ->
       $ = cheerio.load http_res.body
       sales_info = $('.salesInfo').text()
-      index = sales_info.indexOf('販売休止中です')
-      if index is -1
+      if sales_info.match("/(販売休止中です|予定数の販売を終了しました)/") is true
         console.log("#{date_now} --- is salling...? please confirm it !")    
         robot.messageRoom(channel_id, 'switchうってるかも！かくにんしてください！')
         robot.messageRoom(channel_id, 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/')
@@ -140,8 +139,7 @@ module.exports = (robot) ->
     request url, (_, http_res) ->
       $ = cheerio.load http_res.body
       sales_info = $('.salesInfo').text()
-      index = sales_info.indexOf('販売休止中です')
-      if index is -1
+      if sales_info.match("/(販売休止中です|予定数の販売を終了しました)/") is true
         console.log("#{date_now} --- is salling...? please confirm it !")    
         res.send 'switchうってるかも！かくにんしてください！'
         res.send 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/'
