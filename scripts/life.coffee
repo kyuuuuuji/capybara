@@ -160,7 +160,7 @@ module.exports = (robot) ->
 
     request nintendo_product, (_, http_res) ->
       $ = cheerio.load http_res.body
-      sales_info = $('.customize_price .stock').text()
+      $('.items').each(i, elem) ->
         if $(this).text().indexOf('HAC_S_KAYAA') is true
           if $(this).text().lastIndexOf('-') is -1
             console.log("#{date_now} --- is salling...? please confirm it !")    
@@ -178,7 +178,7 @@ module.exports = (robot) ->
     request nintendo_product, (_, http_res) ->
       $ = cheerio.load http_res.body
 
-      $('.items').each(function(i, elem) {
+      $('.items').each(i, elem) ->
         if $(this).text().indexOf('HAC_S_KAYAA') is true
           if $(this).text().lastIndexOf('-') is -1
             console.log("#{date_now} --- is salling...? please confirm it !")    
@@ -188,4 +188,3 @@ module.exports = (robot) ->
             console.log("#{date_now} --- not sales yet...")    
             res.send 'まだやで'
 
-      });
