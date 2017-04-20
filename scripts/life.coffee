@@ -161,7 +161,7 @@ module.exports = (robot) ->
     request nintendo_product, (_, http_res) ->
       $ = cheerio.load http_res.body
       $('.items').each ->
-        if $(this).text().indexOf('HAC_S_KAYAA') is true
+        if $(this).text().indexOf('HAC_S_KAYAA') isnt -1
           if $(this).text().lastIndexOf('-') is -1
             console.log("#{date_now} --- is salling...? please confirm it !")    
             robot.messageRoom(channel_id, 'にんてんどーすとあでswitchうってるかも！かくにんしてください！')
@@ -179,7 +179,7 @@ module.exports = (robot) ->
       $ = cheerio.load http_res.body
 
       $('.items').each ->
-        if $(this).text().indexOf('HAC_S_KAYAA') is true
+        if $(this).text().indexOf('HAC_S_KAYAA') isnt -1
           if $(this).text().lastIndexOf('-') is -1
             console.log("#{date_now} --- is salling...? please confirm it !")    
             res.send 'にんてんどーすとあでswitchうってるかも！かくにんしてください！'
