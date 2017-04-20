@@ -2,7 +2,8 @@ cronJob = require('cron').CronJob
 request = require('request');
 cheerio = require('cheerio');
 moment = require('moment-timezone');
-
+yodobashi_product = 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/'
+nintendo_product = 'https://store.nintendo.co.jp/customize.html'
 module.exports = (robot) ->
 
   # okane add kaka 12000
@@ -117,32 +118,71 @@ module.exports = (robot) ->
   new cronJob('0 */10 * * * *', () ->
     channel_id = process.env.CAPYBARA_CHANNEL_ID
     date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
-    url = 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/'
     console.log("#{date_now} --- cron acceccing to yodobashi site...")
 
-    request url, (_, http_res) ->
+    request yodobashi_product, (_, http_res) ->
       $ = cheerio.load http_res.body
       sales_info = $('.salesInfo').text()
       if sales_info.match("/(販売休止中です|予定数の販売を終了しました)/") is true
         console.log("#{date_now} --- is salling...? please confirm it !")    
-        robot.messageRoom(channel_id, 'switchうってるかも！かくにんしてください！')
-        robot.messageRoom(channel_id, 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/')
+        robot.messageRoom(channel_id, 'よどばしでswitchうってるかも！かくにんしてください！')
+        robot.messageRoom(channel_id, yodobashi_product)
       else
         console.log("#{date_now} --- not sales yet...")    
   , null, true, "Asia/Tokyo").start()
 
   robot.respond /どうよ/i, (res) ->
     date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
-    url = 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/'
     console.log("#{date_now} --- robot acceccing to yodobashi site...")
 
-    request url, (_, http_res) ->
+    request yodobashi_product, (_, http_res) ->
       $ = cheerio.load http_res.body
       sales_info = $('.salesInfo').text()
       if sales_info.match("/(販売休止中です|予定数の販売を終了しました)/") is true
         console.log("#{date_now} --- is salling...? please confirm it !")    
-        res.send 'switchうってるかも！かくにんしてください！'
-        res.send 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/'
+        res.send 'よどばしでswitchうってるかも！かくにんしてください！'
+        res.send yodobashi_product
+      else
+        console.log("#{date_now} --- not sales yet...")    
+        res.send 'まだやで'
+
+  robot.respond /よどばし/i, (res) -> 
+    res.send 'ここやで'
+    res.send yodobashi_product
+
+  robot.respond /にんてんど/i, (res) -> 
+    res.send 'ここやで'
+    res.send nintendo_product
+
+
+  new cronJob('0 */10 * * * *', () ->
+    channel_id = process.env.CAPYBARA_CHANNEL_ID
+    date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
+    console.log("#{date_now} --- cron acceccing to nintendo site...")
+
+    request nintendo_product, (_, http_res) ->
+      $ = cheerio.load http_res.body
+      sales_info = $('.customize_price .stock').text()
+      if sales_info isnt 'SOLD OUT'
+        console.log("#{date_now} --- is salling...? please confirm it !")    
+        robot.messageRoom(channel_id, 'にんてんどーすとあでswitchうってるかも！かくにんしてください！')
+        robot.messageRoom(channel_id, nintendo_product)
+      else
+        console.log("#{date_now} --- not sales yet...")    
+  , null, true, "Asia/Tokyo").start()
+
+
+  robot.respond /にんてんどうよ/i, (res) ->
+    date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
+    console.log("#{date_now} --- robot acceccing to nintendo site...")
+
+    request nintendo_product, (_, http_res) ->
+      $ = cheerio.load http_res.body
+      sales_info = $('.customize_price .stock').text()
+      if sales_info isnt 'SOLD OUT'
+        console.log("#{date_now} --- is salling...? please confirm it !")    
+        res.send 'にんてんどーすとあでswitchうってるかも！かくにんしてください！'
+        res.send nintendo_product
       else
         console.log("#{date_now} --- not sales yet...")    
         res.send 'まだやで'
