@@ -146,11 +146,9 @@ module.exports = (robot) ->
         console.log("#{date_now} --- not sales yet...")    
         res.send 'まだやで'
 
-  robot.respond /よどばし/i, (res) -> 
-    res.send 'ここやで'
+  robot.respond /どこや/i, (res) -> 
+    res.send 'ここと'
     res.send yodobashi_product
-
-  robot.respond /にんてんど/i, (res) -> 
     res.send 'ここやで'
     res.send nintendo_product
 
@@ -163,12 +161,13 @@ module.exports = (robot) ->
     request nintendo_product, (_, http_res) ->
       $ = cheerio.load http_res.body
       sales_info = $('.customize_price .stock').text()
-      if sales_info isnt 'SOLD OUT'
-        console.log("#{date_now} --- is salling...? please confirm it !")    
-        robot.messageRoom(channel_id, 'にんてんどーすとあでswitchうってるかも！かくにんしてください！')
-        robot.messageRoom(channel_id, nintendo_product)
-      else
-        console.log("#{date_now} --- not sales yet...")    
+        if $(this).text().indexOf('HAC_S_KAYAA') is true
+          if $(this).text().lastIndexOf('-') is -1
+            console.log("#{date_now} --- is salling...? please confirm it !")    
+            robot.messageRoom(channel_id, 'にんてんどーすとあでswitchうってるかも！かくにんしてください！')
+            robot.messageRoom(channel_id, nintendo_product)
+          else
+            console.log("#{date_now} --- not sales yet...")    
   , null, true, "Asia/Tokyo").start()
 
 
@@ -178,11 +177,15 @@ module.exports = (robot) ->
 
     request nintendo_product, (_, http_res) ->
       $ = cheerio.load http_res.body
-      sales_info = $('.customize_price .stock').text()
-      if sales_info isnt 'SOLD OUT'
-        console.log("#{date_now} --- is salling...? please confirm it !")    
-        res.send 'にんてんどーすとあでswitchうってるかも！かくにんしてください！'
-        res.send nintendo_product
-      else
-        console.log("#{date_now} --- not sales yet...")    
-        res.send 'まだやで'
+
+      $('.items').each(function(i, elem) {
+        if $(this).text().indexOf('HAC_S_KAYAA') is true
+          if $(this).text().lastIndexOf('-') is -1
+            console.log("#{date_now} --- is salling...? please confirm it !")    
+            res.send 'にんてんどーすとあでswitchうってるかも！かくにんしてください！'
+            res.send nintendo_product
+          else
+            console.log("#{date_now} --- not sales yet...")    
+            res.send 'まだやで'
+
+      });
