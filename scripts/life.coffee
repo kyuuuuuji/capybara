@@ -178,7 +178,7 @@ module.exports = (robot) ->
     request nintendo_product, (_, http_res) ->
       $ = cheerio.load http_res.body
 
-      $('.items').each(i, elem) ->
+      $('.items').each ->
         if $(this).text().indexOf('HAC_S_KAYAA') is true
           if $(this).text().lastIndexOf('-') is -1
             console.log("#{date_now} --- is salling...? please confirm it !")    
