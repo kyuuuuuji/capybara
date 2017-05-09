@@ -115,76 +115,76 @@ module.exports = (robot) ->
           break;
 
 
-  new cronJob('0 */10 * * * *', () ->
-    channel_id = process.env.CAPYBARA_CHANNEL_ID
-    date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
-    console.log("#{date_now} --- cron acceccing to yodobashi site...")
+  # new cronJob('0 */10 * * * *', () ->
+  #   channel_id = process.env.CAPYBARA_CHANNEL_ID
+  #   date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
+  #   console.log("#{date_now} --- cron acceccing to yodobashi site...")
 
-    request yodobashi_product, (_, http_res) ->
-      $ = cheerio.load http_res.body
-      sales_info = $('.salesInfo').text()
-      if sales_info.match("/(販売休止中です|予定数の販売を終了しました)/") is true
-        console.log("#{date_now} --- is salling...? please confirm it !")    
-        robot.messageRoom(channel_id, 'よどばしでswitchうってるかも！かくにんしてください！')
-        robot.messageRoom(channel_id, yodobashi_product)
-      else
-        console.log("#{date_now} --- not sales yet...")    
-  , null, true, "Asia/Tokyo").start()
+  #   request yodobashi_product, (_, http_res) ->
+  #     $ = cheerio.load http_res.body
+  #     sales_info = $('.salesInfo').text()
+  #     if sales_info.match("/(販売休止中です|予定数の販売を終了しました)/") is true
+  #       console.log("#{date_now} --- is salling...? please confirm it !")    
+  #       robot.messageRoom(channel_id, 'よどばしでswitchうってるかも！かくにんしてください！')
+  #       robot.messageRoom(channel_id, yodobashi_product)
+  #     else
+  #       console.log("#{date_now} --- not sales yet...")    
+  # , null, true, "Asia/Tokyo").start()
 
-  robot.respond /どうよ/i, (res) ->
-    date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
-    console.log("#{date_now} --- robot acceccing to yodobashi site...")
+  # robot.respond /どうよ/i, (res) ->
+  #   date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
+  #   console.log("#{date_now} --- robot acceccing to yodobashi site...")
 
-    request yodobashi_product, (_, http_res) ->
-      $ = cheerio.load http_res.body
-      sales_info = $('.salesInfo').text()
-      if sales_info.match("/(販売休止中です|予定数の販売を終了しました)/") is true
-        console.log("#{date_now} --- is salling...? please confirm it !")    
-        res.send 'よどばしでswitchうってるかも！かくにんしてください！'
-        res.send yodobashi_product
-      else
-        console.log("#{date_now} --- not sales yet...")    
-        res.send 'まだやで'
+  #   request yodobashi_product, (_, http_res) ->
+  #     $ = cheerio.load http_res.body
+  #     sales_info = $('.salesInfo').text()
+  #     if sales_info.match("/(販売休止中です|予定数の販売を終了しました)/") is true
+  #       console.log("#{date_now} --- is salling...? please confirm it !")    
+  #       res.send 'よどばしでswitchうってるかも！かくにんしてください！'
+  #       res.send yodobashi_product
+  #     else
+  #       console.log("#{date_now} --- not sales yet...")    
+  #       res.send 'まだやで'
 
-  robot.respond /どこや/i, (res) -> 
-    res.send 'ここと'
-    res.send yodobashi_product
-    res.send 'ここやで'
-    res.send nintendo_product
-
-
-  new cronJob('0 */10 * * * *', () ->
-    channel_id = process.env.CAPYBARA_CHANNEL_ID
-    date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
-    console.log("#{date_now} --- cron acceccing to nintendo site...")
-
-    request nintendo_product, (_, http_res) ->
-      $ = cheerio.load http_res.body
-      $('.items').each ->
-        if $(this).text().indexOf('HAC_S_KAYAA') isnt -1
-          if $(this).text().lastIndexOf('-') is -1
-            console.log("#{date_now} --- is salling...? please confirm it !")    
-            robot.messageRoom(channel_id, 'にんてんどーすとあでswitchうってるかも！かくにんしてください！')
-            robot.messageRoom(channel_id, nintendo_product)
-          else
-            console.log("#{date_now} --- not sales yet...")    
-  , null, true, "Asia/Tokyo").start()
+  # robot.respond /どこや/i, (res) -> 
+  #   res.send 'ここと'
+  #   res.send yodobashi_product
+  #   res.send 'ここやで'
+  #   res.send nintendo_product
 
 
-  robot.respond /にんてんどうよ/i, (res) ->
-    date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
-    console.log("#{date_now} --- robot acceccing to nintendo site...")
+  # new cronJob('0 */10 * * * *', () ->
+  #   channel_id = process.env.CAPYBARA_CHANNEL_ID
+  #   date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
+  #   console.log("#{date_now} --- cron acceccing to nintendo site...")
 
-    request nintendo_product, (_, http_res) ->
-      $ = cheerio.load http_res.body
+  #   request nintendo_product, (_, http_res) ->
+  #     $ = cheerio.load http_res.body
+  #     $('.items').each ->
+  #       if $(this).text().indexOf('HAC_S_KAYAA') isnt -1
+  #         if $(this).text().lastIndexOf('-') is -1
+  #           console.log("#{date_now} --- is salling...? please confirm it !")    
+  #           robot.messageRoom(channel_id, 'にんてんどーすとあでswitchうってるかも！かくにんしてください！')
+  #           robot.messageRoom(channel_id, nintendo_product)
+  #         else
+  #           console.log("#{date_now} --- not sales yet...")    
+  # , null, true, "Asia/Tokyo").start()
 
-      $('.items').each ->
-        if $(this).text().indexOf('HAC_S_KAYAA') isnt -1
-          if $(this).text().lastIndexOf('-') is -1
-            console.log("#{date_now} --- is salling...? please confirm it !")    
-            res.send 'にんてんどーすとあでswitchうってるかも！かくにんしてください！'
-            res.send nintendo_product
-          else
-            console.log("#{date_now} --- not sales yet...")    
-            res.send 'まだやで'
+
+  # robot.respond /にんてんどうよ/i, (res) ->
+  #   date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
+  #   console.log("#{date_now} --- robot acceccing to nintendo site...")
+
+  #   request nintendo_product, (_, http_res) ->
+  #     $ = cheerio.load http_res.body
+
+  #     $('.items').each ->
+  #       if $(this).text().indexOf('HAC_S_KAYAA') isnt -1
+  #         if $(this).text().lastIndexOf('-') is -1
+  #           console.log("#{date_now} --- is salling...? please confirm it !")    
+  #           res.send 'にんてんどーすとあでswitchうってるかも！かくにんしてください！'
+  #           res.send nintendo_product
+  #         else
+  #           console.log("#{date_now} --- not sales yet...")    
+  #           res.send 'まだやで'
 
