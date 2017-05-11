@@ -2,6 +2,8 @@ cronJob = require('cron').CronJob
 request = require('request');
 cheerio = require('cheerio');
 moment = require('moment-timezone');
+jquery = require('jquery')
+jqplot = require('jqplot');
 yodobashi_product = 'http://www.yodobashi.com/%E4%BB%BB%E5%A4%A9%E5%A0%82-Nintendo-Nintendo-Switch-Joy-Con-L-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%96%E3%83%AB%E3%83%BC-R-%E3%83%8D%E3%82%AA%E3%83%B3%E3%83%AC%E3%83%83%E3%83%89-Nintendo-Switch%E6%9C%AC%E4%BD%93/pd/100000001003431566/'
 nintendo_product = 'https://store.nintendo.co.jp/customize.html'
 module.exports = (robot) ->
@@ -188,3 +190,49 @@ module.exports = (robot) ->
   #           console.log("#{date_now} --- not sales yet...")    
   #           res.send 'まだやで'
 
+  robot.respond /温度(.*)℃ 湿度(.*)％/i, (res) ->
+    date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
+    key = String(date_now.getFullYear()) + String(date_now.getMonth() + 1) + String(date_now.getDate())
+    temperature = Number(res.match[1])
+    humidity = Number(res.match[2])
+
+    obj = new Object();
+    obj.time = date_now
+    obj.temperature = temperature
+    obj.humidity = humidity
+
+    today = robot.brain.get(key)
+
+    # 配列
+    datas = JSON.parse(today) ? new Array()
+    datas.push(obj)
+    robot.brain.set(key, JSON.stringify(datas))
+
+  robot.respond /today/i, (res) ->
+    date_now = new Date(moment().tz("Asia/Tokyo").format('YYYY/MM/DD hh:mm:ss'))
+    key = String(date_now.getFullYear()) + String(date_now.getMonth() + 1) + String(date_now.getDate())
+    today = robot.brain.get(key)
+
+    res.send(today)
+
+    data = [[
+      ['2014-01-01',3],
+      ['2014-02-01',1],
+      ['2014-03-01',0],
+      ['2014-04-01',45],
+      ['2014-05-01',0],
+      ['2014-06-01',0],
+      ['2014-07-01',0],
+      ['2014-08-01',0],
+      ['2014-09-01',0],
+      ['2014-10-01',0],
+      ['2014-11-01',0],
+      ['2014-12-01',0]
+    ]]
+
+    graph = ""
+
+    jquery.jqPlot(graph, data)
+
+    console.log(graph)
+    
